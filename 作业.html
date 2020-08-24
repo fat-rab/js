@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //compose
+      //   function compose(...funcs) {
+      //     if (funcs.length === 0) {
+      //       return (arg) => arg;
+      //     }
+      //     return funcs.reduce((a, b) => (...args) => a(b(...args)));
+      //   }
+      function compose(...funcs) {
+        if (funcs.length === 0) {
+          return function (arg) {
+            return arg;
+          };
+        }
+        return funcs.reduce((a, b) => {
+          return function (...args) {
+            return a(b(...args));
+          };
+        });
+      }
+      let add = (n) => n + 3;
+      let multiple = (n) => n * 2;
+      let minus = (n) => n - 1;
+      //console.log(compose(add, multiple, minus)(10));
+
+      //缓存函数
+      //斐波那契函数
+      var count = 0;
+      var fibonacci = function (num) {
+        count++;
+        return num < 2 ? num : fibonacci(num - 1) + fibonacci(num - 2);
+      };
+
+      //   for (let i = 0; i < 10; i++) {
+      //     fibonacci(i);
+      //   }
+      //   console.log(count) //276
+      function memo(func) {
+        let obj = {};
+        return function (key) {
+          if (!obj[key]) {
+            obj[key] = func.apply(this, arguments);
+          }
+          return obj[key];
+        };
+      }
+      fibonacci = memo(fibonacci);
+      for (let i = 0; i < 10; i++) {
+        fibonacci(i);
+      }
+      console.log(count);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,132 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-08-14 15:43:42
+ * @LastEditTime: 2020-08-18 15:32:44
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \网易高级前端课程\1JS\最长公共子序列.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+         当两个字符串最后一个相同时，
+         则他们的LCS（最长公共子序列简写）就是两个字符串都去掉最后一个字符的LCS再加一
+         最后一位不同时
+         他们的lcs是str1去掉最后一位和str2的lcs与str1和str2去掉最后一位的lcs 中的最大值
+         其中一个为0时，lcs为0
+        */
+      let str1 = "abe";
+      let str2 = "abc";
+      //递归方案
+      function lcs(str1, str2) {
+        if (str1.length === 0 || str2.length === 0) {
+          return 0;
+        }
+        let lastStr1 = str1.slice(-1);
+        let lastStr2 = str2.slice(-1);
+        let startStr1 = str1.slice(0, -1);
+        let startStr2 = str2.slice(0, -1);
+        if (lastStr1 === lastStr2) {
+          return lcs(startStr1, startStr2) + 1;
+        } else {
+          let lcs1 = lcs(str1, startStr2);
+          let lcs2 = lcs(startStr1, str2);
+          return Math.max(lcs1, lcs2);
+        }
+      }
+      //console.log(lcs(str1, str2));
+
+      //动态规划方案
+      function lcs2(str1, str2) {
+        let length1 = str1.length;
+        let length2 = str2.length;
+        // 构建一个二维数组
+        // i表示行号，对应length1 + 1
+        // j表示列号， 对应length2 + 1
+        // 第一行和第一列全部为0
+        let result = [];
+        for (let i = 0; i < length1 + 1; i++) {
+          result.push([]); //初始化每行为空数组
+          for (let j = 0; j < length2 + 1; j++) {
+            if (i === 0) {
+              result[i][j] = 0; // 第一行全部为0  i=0时结果为0
+            } else if (j === 0) {
+              result[i][j] = 0; // 第一列全部为0  j=0时结果为0
+            } else if (str1[i - 1] === str2[j - 1]) {
+              // 最后一个字符相同
+              result[i][j] = result[i - 1][j - 1] + 1;
+            } else {
+              // 最后一个字符不同
+              result[i][j] = Math.max(result[i][j - 1], result[i - 1][j]);
+            }
+          }
+        }
+
+        return result[length1][length2];
+      }
+      // let result = lcs2("cB", "dB");
+      // console.log(result);
+
+      //输出最长公共子序列
+      function lcs3(str1, str2) {
+        let length1 = str1.length;
+        let length2 = str2.length;
+        let result = [];
+        let comeFrom = [];
+        for (let i = 0; i < length1 + 1; i++) {
+          result.push([]);
+          comeFrom.push([]);
+          for (let j = 0; j < length2 + 1; j++) {
+            if (i === 0) {
+              result[i][j] = 0;
+              comeFrom[i][j] = 0;
+            } else if (j === 0) {
+              result[i][j] = 0;
+              comeFrom[i][j] = 0;
+            } else if (str1[i - 1] === str2[j - 1]) {
+              result[i][j] = result[i - 1][j - 1] + 1;
+              comeFrom[i][j] = 1; //最后一个字符串相等，值从斜上方来
+            } else if (str1[i - 1] !== str2[j - 1]) {
+              if (result[i][j - 1] > result[i - 1][j]) {
+                result[i][j] = result[i][j - 1];
+                comeFrom[i][j] = 2; //最后一个字符串相等，值从左方来
+              } else {
+                result[i][j] = result[i - 1][j];
+                comeFrom[i][j] = 3; //最后一个字符串相等，值从上方来
+              }
+            }
+          }
+        }
+        //console.log(result, comeFrom);
+        let pointer1 = length1;
+        let pointer2 = length2;
+        let lcsStr = [];
+        while (pointer1 > 0 && pointer2 > 0) {
+          if (comeFrom[pointer1][pointer2] === 1) {
+            lcsStr.push(str1[pointer1 - 1]);
+            pointer1--;
+            pointer2--;
+          } else if (comeFrom[pointer1][pointer2] === 2) {
+            pointer2--;
+          } else {
+            pointer1--;
+          }
+        }
+        lcsStr.reverse();
+        lcsStr = lcsStr.join("");
+        return {
+          length: result[length1][length2],
+          str: lcsStr,
+        };
+      }
+      console.log(lcs3("acdqwe", "cqe"))
+    </script>
+  </body>
+</html>

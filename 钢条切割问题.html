@@ -1,0 +1,94 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-08-19 16:03:03
+ * @LastEditTime: 2020-08-20 15:25:30
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \网易高级前端课程\1JS\钢条切割问题.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //长度1 2 3 4 5  6  7  8  9  10
+      //价格1 5 8 9 10 17 17 20 24 30
+      const p = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30]; // 下标表示钢条长度，值表示对应价格
+      //n为钢条长度
+      //递归
+      function sell(n) {
+        if (n === 1) return 1;
+        let max = p[n]; //假设最大值为一刀不切
+        for (let i = 1; i < n; i++) {
+          let sum = sell(i) + sell(n - i);
+          if (sum > max) {
+            max = sum;
+          }
+        }
+        return max;
+      }
+      //console.log(sell(9))
+
+      function sell1(n) {
+        if (n === 1) return 1;
+        let max = p[n];
+        for (let i = 1; i < n; i++) {
+          let sum = p[i] + sell(n - i);
+          if (sum > max) {
+            max = sum;
+          }
+        }
+        return max;
+      }
+      //console.log(sell1(9))
+      function sell2(n) {
+        let result = [0, 1]; //数组记录长度和价格
+        for (let i = 2; i <= n; i++) {
+          let max = p[i];
+          for (let j = 1; j <= i; j++) {
+            let sum = p[j] + result[i - j];
+            if (sum > max) max = sum;
+          }
+          result[i] = max;
+        }
+        console.log(result);
+        return result[n];
+      }
+      //console.log(sell2(9))
+      function sell3(n) {
+        let result = [0, 1]; //数组记录长度和最高价格
+        let length = [0, 1]; //切割一次时左边的长度
+        let sellArr = [];
+        for (let i = 2; i <= n; i++) {
+          let max = p[i];
+          length[i] = i;     // 初始化左边为整块不切
+          for (let j = 1; j <= i; j++) {
+            let sum = p[j] + result[i - j];
+            if (sum > max) {
+              max = sum;
+              length[i] = j; //找到最大值记录左边的长度
+            }
+          }
+          result[i] = max;
+        }
+
+        let temp = n;
+        while (temp > 0) {
+          let left = length[temp];
+          sellArr.push(left);
+          temp = temp - left;
+        }
+        console.log(result, length, sellArr);
+        return {
+          max: result[n],
+          arr: sellArr,
+        };
+      }
+      //console.log(sell3(9))
+    </script>
+  </body>
+</html>

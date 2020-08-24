@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // flat  //需要在浏览器中执行
+      //   let arr = [1, 2, [3], [4, [5]]];
+      //   let arr1 = arr.flat(); //默认是1  //Infinity
+      //   console.log(arr1);
+
+      //去重
+      let arr = [1, 2, 3, 4, 4, 4, 5, 5, 6, 6, 7, 7];
+
+      let arr1 = arr.reduce((a, b) => {
+        !a.includes(b) ? a.push(b) : "";
+        return a;
+      }, []);
+      console.log(arr1);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var curry = (fn) => {
+        let calcArr = [];
+        return function next() {
+          let arr = [].slice.call(arguments);
+          if (arr.length > 0) {
+            calcArr = calcArr.concat(arr);
+            return next;
+          } else {
+            console.log(calcArr, "calc"); //数组
+            return fn.apply(this, calcArr);
+            //return fn(...calcArr);
+          }
+        };
+      };
+      var fn = function () {
+        var arrs = [].slice.call(arguments);
+        return arrs.reduce((a, b) => {
+          return a + b;
+        });
+      };
+      var add = curry(fn);
+      console.log(add(1)(2, 3)(4)());
+    </script>
+  </body>
+</html>

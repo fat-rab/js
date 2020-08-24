@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 链表
+       *
+       * 在React中的Fiber中采用链表树的数据结构来解决主线程阻塞的问题，
+       * 我们一起来试着遍历一个简单的链表结构试试
+       */
+
+      /**
+       * 遍历链表数据结构
+       */
+      const NodeD = {
+        value: 4,
+        next: null,
+      };
+
+      const NodeC = {
+        value: 3,
+        next: NodeD,
+      };
+
+      const NodeB = {
+        value: 2,
+        next: NodeC,
+      };
+
+      const NodeA = {
+        value: 1,
+        next: NodeB,
+      };
+
+      const start = {
+        head: NodeA,
+      };
+      let total = 0;
+      function traversal(linkedList, callback) {
+        const head = linkedList.head;
+        let currentNode = head;
+        while (currentNode.next) {
+          callback(currentNode.value);
+          currentNode = currentNode.next;
+        }
+        callback(currentNode.value);
+      }
+      function sum(num) {
+        return (total += num);
+      }
+      //traversal(start, sum);
+      //console.log(total);
+
+      /*
+      表链有环，最后一个节点的next指向第一个节点
+      */
+      const NodeB2 = {
+        value: 2,
+      };
+      const NodeA2 = {
+        value: 1,
+        next: NodeB2,
+      };
+
+      NodeB2.next = NodeA2;
+      let linkedList2 = {
+        head: NodeA2,
+      };
+      //空间复杂度O(n)
+      // function hasCycle(linkedList) {
+      //   let headNode = linkedList2.head;
+      //   let currentNode = headNode;
+      //   let map = new WeakMap();
+
+      //   while (currentNode.next) {
+      //     let exist = map.get(currentNode);
+      //     if (exist) return true;
+      //     map.set(currentNode, currentNode.value);
+      //     currentNode = currentNode.next;
+      //   }
+      //   return false;
+      // }
+      //同时遍历两个指针，如果相遇肯定有环
+      function hasCycle(linkedList) {
+        let headNode = linkedList2.head;
+        let point1 = headNode;
+        let point2 = headNode;
+
+        while (point1.next) {
+          if (!point2.next || !point2.next.next) {
+            return false;
+          }
+          if (point1 === point2) return true;
+          point1.next = point1;
+          point2.next.next = point2;
+        }
+        return false;
+      }
+      //console.log(hasCycle(linkedList2));
+    </script>
+  </body>
+</html>

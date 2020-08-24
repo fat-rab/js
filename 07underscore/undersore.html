@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- <script src="./undersore.js"></script> -->
+    <script src="./test.js"></script>
+    <script>
+      let arr = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, "a", "A"];
+      let func = function (key) {
+        return typeof key === "string" ? key.toLocaleLowerCase() : key;
+      };
+      let mapf = function (item) {
+        return item + 1;
+      };
+     
+      //console.log(_.unique(arr, func)); //去重且不区分大小写
+      //console.log(_(arr).unique());
+
+      //链式调用  chain()开启链式调用 value()结束调用返回结果
+      //console.log(_(arr).chain().unique(func).map(mapf).value());
+      console.log(_.chain(arr).unique(func).map(mapf).value(),'123');
+    </script>
+  </body>
+</html>

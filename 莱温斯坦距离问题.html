@@ -1,0 +1,73 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-08-18 15:53:36
+ * @LastEditTime: 2020-08-19 09:29:58
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \网易高级前端课程\1JS\莱温斯坦距离问题.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let word1 = "horse";
+      let word2 = "ros";
+      function minDistance(str1, str2) {
+        let length1 = str1.length;
+        let length2 = str2.length;
+        let lastStr1 = str1.slice(-1);
+        let lastStr2 = str2.slice(-1);
+        let startStr1 = str1.slice(0, -1);
+        let startStr2 = str2.slice(0, -1);
+        if (!length1) {
+          return length2;
+        }
+        if (!length2) {
+          return length1;
+        }
+        if (lastStr1 === lastStr2) {
+          return minDistance(startStr1, startStr2);
+        } else {
+          let num =
+            Math.min(
+              minDistance(str1, startStr2),
+              minDistance(startStr1, str2),
+              minDistance(startStr1, startStr2)
+            ) + 1;
+          return num;
+        }
+      }
+      //console.log(minDistance(word1, word2));
+      function minDistance1(str1, str2) {
+        let length1 = str1.length;
+        let length2 = str2.length;
+        let result = [];
+        for (let i = 0; i < length1 + 1; i++) {
+          result.push([]);
+          for (let j = 0; j < length2 + 1; j++) {
+            if (i === 0) {
+              result[i][j] = j;
+            } else if (j === 0) {
+              result[i][j] = i;
+            } else if (str1[i - 1] === str2[j - 1]) {
+              result[i][j] = result[i - 1][j - 1];
+            } else {
+              result[i][j] = Math.min(
+                result[i - 1][j - 1],
+                result[i][j - 1],
+                result[i - 1][j]
+              )+1;
+            }
+          }
+        }
+        return result[length1][length2]
+      }
+      console.log(minDistance1(word1, word2));
+    </script>
+  </body>
+</html>
