@@ -7,28 +7,76 @@
   </head>
   <body>
     <script>
-      var curry = (fn) => {
-        let calcArr = [];
-        return function next() {
-          let arr = [].slice.call(arguments);
-          if (arr.length > 0) {
-            calcArr = calcArr.concat(arr);
-            return next;
-          } else {
-            console.log(calcArr, "calc"); //数组
-            return fn.apply(this, calcArr);
-            //return fn(...calcArr);
+      //缓存函数
+      function memoize(fun) {
+        let calcs = {};
+        return function (key) {
+          if (!calcs[key]) {
+            calcs[key] = fun.apply(this, arguments);
           }
+          return calcs[key];
         };
-      };
-      var fn = function () {
-        var arrs = [].slice.call(arguments);
-        return arrs.reduce((a, b) => {
-          return a + b;
-        });
-      };
-      var add = curry(fn);
-      console.log(add(1)(2, 3)(4)());
+      }
+      let count = 0;
+      function fibonacci(num) {
+        count++;
+        return num < 2 ? num : fibonacci(num - 1) + fibonacci(num - 2);
+      }
+
+      // for (let i = 0; i <= 10; i++) {
+      //   fibonacci(i)
+      // }
+      // console.log(count)
+      fibonacci = memoize(fibonacci);
+      for (let i = 0; i <= 10; i++) {
+        fibonacci(i);
+      }
+      console.log(count);
+      // let sum = (x) => x + 10;
+      // let multiply = (y) => y * 10;
+      // let minus = (n) => n - 1;
+      // function compose() {
+      //   let args = [].slice.call(arguments);
+      //   return function (num) {
+      //     return args.reduceRight((res, cur) => {
+      //       return cur(res);
+      //     }, num);
+      //   };
+      // }
+      // let calc = compose(sum, multiply, minus);
+      // //console.log(calc(10));
+      // let pipe = function () {
+      //   let arg = [].slice.call(arguments);
+      //   return function (num) {
+      //     return arg.reduce((a, b) => {
+      //       return b(a);
+      //     }, num);
+      //   };
+      // };
+      // let pipeCalc = pipe(sum, multiply, minus);
+      // console.log(pipeCalc(10)) //199
+      // var curry = (fn) => {
+      //   let calcArr = [];
+      //   return function next() {
+      //     let arr = [].slice.call(arguments);
+      //     if (arr.length > 0) {
+      //       calcArr = calcArr.concat(arr);
+      //       return next;
+      //     } else {
+      //       console.log(calcArr, "calc"); //数组
+      //       return fn.apply(this, calcArr);
+      //       //return fn(...calcArr);
+      //     }
+      //   };
+      // };
+      // var fn = function () {
+      //   var arrs = [].slice.call(arguments);
+      //   return arrs.reduce((a, b) => {
+      //     return a + b;
+      //   });
+      // };
+      // var add = curry(fn);
+      // console.log(add(1)(2, 3)(4)());
     </script>
   </body>
 </html>
