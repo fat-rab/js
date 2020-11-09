@@ -25,7 +25,8 @@
       function count() {
         content.innerHTML = num++;
       }
-      // debounce 所谓防抖，就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
+      // debounce 所谓防抖，就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，
+      //则会重新计算函数执行时间。
       //一般用于缩放网页大小,Input输入
       let debounce = function (fn, time, immediate) {
         let canRun = true;
@@ -53,7 +54,7 @@
           };
         }
       };
-      content.onmousemove = debounce(count, 2000, false);
+      //content.onmousemove = debounce(count, 2000, false);
       //节流（throttle） 所谓节流，就是指连续触发事件但是在 n 秒中只执行一次函数   放大镜,滚动条
       let throttle = function (fn, time, immediate) {
         let canRun = true;

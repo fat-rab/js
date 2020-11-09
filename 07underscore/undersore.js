@@ -60,6 +60,9 @@
             _.prototype[key] = function () {
                 let args = [this.warp]
                 //数组合并
+                //let arr=[].slice.call(arguments)
+                //arr.forEach((item)=>{args.push(item)})
+                //Array.prototype.push.apply(args, [1,2,3])
                 Array.prototype.push.apply(args, arguments)//arguments 可以传递多个callback
                 //func.apply(this, args)   //[数据，迭代器]
                 return result(this, func.apply(this, args))

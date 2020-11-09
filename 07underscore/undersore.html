@@ -16,13 +16,13 @@
       let mapf = function (item) {
         return item + 1;
       };
-     
+      //console.log(_(arr));
       //console.log(_.unique(arr, func)); //去重且不区分大小写
-      //console.log(_(arr).unique());
+      console.log(_(arr).unique(func));
 
       //链式调用  chain()开启链式调用 value()结束调用返回结果
       //console.log(_(arr).chain().unique(func).map(mapf).value());
-      console.log(_.chain(arr).unique(func).map(mapf).value(),'123');
+      //console.log(_.chain(arr).unique(func).map(mapf).value(),'123');
     </script>
   </body>
 </html>

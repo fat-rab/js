@@ -40,7 +40,7 @@
  @param 2 不立即计算，延后执行
  @param 3 符合计算的条件，将缓存的函数，统一传递给执行方法
 */
-//非柯里化
+// // 非柯里化
 // let hasSpace = (reg, str) => {
 //     return reg.test(str)
 // }
@@ -77,11 +77,11 @@
 //     });
 // };
 // let add = curry(fn);
-
+// console.log(add)
 // console.log(add(1)(2, 3)(4)());
 //偏函数
 //偏函数是将一个N元函数转换成一个N-X元函数  
 //可以利用bind 实现
-let sum = (x, y) => x + y
-let bindSum = sum.bind(this, 1)
-console.log(bindSum(2))
+// let sum = (x, y) => x + y
+// let bindSum = sum.bind(this, 1)
+// console.log(bindSum(2))

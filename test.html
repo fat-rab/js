@@ -6,32 +6,191 @@
     <title>Document</title>
   </head>
   <body>
+    <div
+      id="content"
+      style="
+        height: 150px;
+        line-height: 150px;
+        text-align: center;
+        color: #fff;
+        background-color: #ccc;
+        font-size: 80px;
+      "
+    ></div>
     <script>
-      //缓存函数
-      function memoize(fun) {
-        let calcs = {};
-        return function (key) {
-          if (!calcs[key]) {
-            calcs[key] = fun.apply(this, arguments);
-          }
-          return calcs[key];
-        };
-      }
-      let count = 0;
-      function fibonacci(num) {
-        count++;
-        return num < 2 ? num : fibonacci(num - 1) + fibonacci(num - 2);
-      }
-
-      // for (let i = 0; i <= 10; i++) {
-      //   fibonacci(i)
+      // let test = {
+      //   name: "tom",
+      //   age: undefined,
+      //   dirve: () => {},
+      //   info: {
+      //     height: 180,
+      //   },
+      // };
+      // let deepClone = function (obj) {
+      //   let newObj=Array.isArray(obj)?[]:{}
+      //   for (const key in obj) {
+      //     if (obj.hasOwnProperty(key)) {
+      //       if(obj[key]&& typeof obj[key]==='object'){
+      //         newObj[key]=deepClone(obj[key])
+      //       }else{
+      //         newObj[key]=obj[key]
+      //       }
+      //     }
+      //   }
+      //   return newObj
+      // };
+      // let copyObj=deepClone(test)
+      // copyObj.name='jerry'
+      // copyObj.info.height=170
+      // console.log(test,copyObj)
+      let a = {
+        name: undefined,
+        age() {},
+      };
+      copyObj = JSON.parse(JSON.stringify(a));
+      console.log(copyObj);
+      // let arr = [1, 2, [3, 4]];
+      // let obj = {
+      //   a: 1,
+      //   b: { c: 2 },
+      // };
+      // let arr1 = [];
+      // let obj1 = {};
+      // //arr1=arr.concat()
+      // //arr1=arr.slice()
+      // // for (let i = 0; i < arr.length; i++) {
+      // //   arr1.push(arr[i]);
+      // // }
+      // arr1[0]=0
+      // arr1[2][0] = 0;
+      // console.log(arr1, arr);
+      // for (const key in obj) {
+      //   obj1[key] = obj[key];
       // }
-      // console.log(count)
-      fibonacci = memoize(fibonacci);
-      for (let i = 0; i <= 10; i++) {
-        fibonacci(i);
-      }
-      console.log(count);
+      // obj1['a']=2
+      // obj1['b']['c']=3
+      // console.log(obj1,obj);
+      // let num = 1;
+      // let content = document.getElementById("content");
+      // function count() {
+      //   content.innerHTML = num++;
+      // }
+      //content.onmousemove = count;
+      // function throttle(fn, time, immediate) {
+      //   let canRun = true;
+      //   let timeout;
+      //   if (immediate) {
+      //     return function () {
+      //       if (canRun) {
+      //         canRun = false;
+      //         fn.apply(this.arguments);
+      //         setTimeout(() => {
+      //           canRun = true;
+      //         }, time);
+      //       }
+      //     };
+      //   } else {
+      //     return function () {
+      //       if (canRun) {
+      //         canRun = false;
+      //         setTimeout(() => {
+      //           fn.apply(this.arguments);
+      //           canRun = true;
+      //         }, time);
+      //       }
+      //     };
+      //   }
+      // }
+      //content.onmousemove = throttle(count, 1000, true);
+      //content.onmousemove = throttle(count, 1000, false);
+      // function debounce(fn, time, immediate) {
+      //   let canRun = true;
+      //   let timeout;
+      //   if (immediate) {
+      //     return function () {
+      //       if (canRun) {
+      //         canRun = false;
+      //         fn.apply(this, arguments);
+      //       }
+      //       clearTimeout(timeout);
+      //       timeout = setTimeout(() => {
+      //         canRun = true;
+      //       }, time);
+      //     };
+      //   } else {
+      //     return function () {
+      //       if (timeout) {
+      //         clearTimeout(timeout);
+      //       }
+      //       timeout = setTimeout(() => {
+      //         fn.apply(this, arguments);
+      //       }, time);
+      //     };
+      //   }
+      // }
+      //content.onmousemove = debounce(count, 2000, true);
+      //content.onmousemove = debounce(count, 2000, false);
+      //偏函数
+      // let sum = (x, y) => x + y;
+      // let bindSum = sum.bind(this, 1);
+      // console.log(bindSum)
+      // console.log(bindSum(2));
+      //实现 add(1)(2, 3)(4)() = 10
+      // function curry(fn) {
+      //   let curryArr = [];
+      //   return function next() {
+      //     let arr = [].slice.call(arguments);
+      //     if (arr.length > 0) {
+      //       curryArr = curryArr.concat(arr);
+      //       return next;
+      //     } else {
+      //       return fn.apply(this, curryArr);
+      //     }
+      //   };
+      // }
+      // function fn() {
+      //   let arrs = [].slice.call(arguments);
+      //   return arrs.reduce((a, b) => a + b);
+      // }
+      // let add = curry(fn);
+      // console.log(add(1)(2, 3)(4)());
+      // // 非柯里化
+      // let hasSpace = (reg, str) => {
+      //   return reg.test(str);
+      // };
+      // //curry
+      // function curryFn(reg) {
+      //   return function (str) {
+      //     return reg.test(str);
+      //   };
+      // }
+      // let curryHasSpace = curryFn(/\s+/g); //匹配空白字符
+      // console.log(curryHasSpace("xxx xxx"));
+      //缓存函数
+      // function memoize(fun) {
+      //   let calcs = {};
+      //   return function (key) {
+      //     if (!calcs[key]) {
+      //       calcs[key] = fun.apply(this, arguments);
+      //     }
+      //     return calcs[key];
+      //   };
+      // }
+      // let count = 0;
+      // function fibonacci(num) {
+      //   count++;
+      //   return num < 2 ? num : fibonacci(num - 1) + fibonacci(num - 2);
+      // }
+
+      // // for (let i = 0; i <= 10; i++) {
+      // //   fibonacci(i)
+      // // }
+      // // console.log(count)
+      // fibonacci = memoize(fibonacci);
+      // for (let i = 0; i <= 10; i++) {
+      //   fibonacci(i);
+      // }
+      // console.log(count);
       // let sum = (x) => x + 10;
       // let multiply = (y) => y * 10;
       // let minus = (n) => n - 1;
