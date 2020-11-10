@@ -15,8 +15,8 @@
     }
     _.chain = function (obj) {
         //console.log(this, obj, 'chain')
-        let instance = _(obj)
-        instance._chain = true
+        let instance = _(obj) //通过上面的function 无new化实例
+        instance._chain = true //确定开始链式调用
         return instance
     }
     _.prototype.value = function () {

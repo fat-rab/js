@@ -7,7 +7,7 @@
   </head>
   <body>
     <!-- <script src="./undersore.js"></script> -->
-    <script src="./test.js"></script>
+    <script src="./test1.js"></script>
     <script>
       let arr = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, "a", "A"];
       let func = function (key) {
@@ -16,13 +16,15 @@
       let mapf = function (item) {
         return item + 1;
       };
+      //_.chain(arr).unique(func)//此时通过原型链调用构造函数中的方法
+      //console.log();
+      //console.log()
       //console.log(_(arr));
       //console.log(_.unique(arr, func)); //去重且不区分大小写
-      console.log(_(arr).unique(func));
-
+      //console.log(_(arr).unique(func));
       //链式调用  chain()开启链式调用 value()结束调用返回结果
       //console.log(_(arr).chain().unique(func).map(mapf).value());
-      //console.log(_.chain(arr).unique(func).map(mapf).value(),'123');
+      //console.log(_.chain(arr).unique(func).map(mapf).value());
     </script>
   </body>
 </html>

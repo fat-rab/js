@@ -1,14 +1,13 @@
 (function (root) {
     var _ = function (obj) {
-        if (!(this instanceof _)) {
-            return new _(obj)  //无 new 实例
+        if (!(this instanceof _)) {    // instanceof 用于检测构造函数的 prototype 属性是否出现在某个实例对象的原型链
+            return new _(obj)  //无 new 实例  
         }
         this.warp = obj
     }
-    
     _.map = function (arr, callback) {
         return arr.map((item) => {
-            callback ? callback(itme) : item
+            callback ? callback(item) : item
         })
     }
     _.unique = function (arr, callback) {
