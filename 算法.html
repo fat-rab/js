@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-08-12 15:55:46
- * @LastEditTime: 2020-08-14 14:19:59
+ * @LastEditTime: 2020-11-16 15:18:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \网易高级前端课程\1JS\算法.html
@@ -15,6 +15,7 @@
   </head>
   <body>
     <script>
+      //十大经典排序算法
       /**
        * 冒泡排序
        *
@@ -28,8 +29,9 @@
       let arr = [3, 4, 2, 1, 9, 10, 5, 8, 12, 16, 14, 21];
       function bubbleSort(arg) {
         let arr = [...arg];
+        //-1是因为arr[j] 是和 arr[j + 1]比较的，不需要循环到最后一位
         for (let i = 0; i < arr.length - 1; i++) {
-          //从后往前确定，最大值，第一次遍历就可以确定
+          //最大值是从后往前确定的，所以可以 -i
           for (let j = 0; j < arr.length - 1 - i; j++) {
             if (arr[j] > arr[j + 1]) {
               [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
@@ -38,8 +40,30 @@
         }
         return arr;
       }
-
       //console.log(bubbleSort(arr));
+      /**
+       * 选择排序
+       *首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置。
+       *再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。
+       *重复第二步，直到所有元素均排序完毕。
+       * 可以参考：https://www.runoob.com/w3cnote/selection-sort.html
+       */
+      function selectionSort(arg) {
+        let arr = [...arg];
+        let minIndex;
+        //不需要循环到最后一位
+        for (let i = 0; i < arr.length - 1; i++) {
+          minIndex = i;
+          for (let j = i + 1; j < arr.length; j++) {
+            if (arr[j] < arr[minIndex]) {
+              minIndex = j;
+            }
+          }
+          [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+        }
+        return arr;
+      }
+      //console.log(selectionSort(arr));
       /**
        * 插入排序
        *
@@ -49,8 +73,8 @@
        *
        * 可以参考：https://www.runoob.com/w3cnote/insertion-sort.html
        */
-      function insertionSort(src) {
-        let arr = [...src];
+      function insertionSort(arg) {
+        let arr = [...arg];
         for (let i = 0; i < arr.length - 1; i++) {
           for (let j = i; j >= 0; j--) {
             if (arr[j] > arr[j + 1]) {
@@ -63,7 +87,35 @@
         return arr;
       }
       //console.log(insertionSort(arr));
-
+      /**
+       * 希尔排序
+       *希尔排序的基本思想是：先将整个待排序的记录序列分割成为若干子序列分别进行直接插入排序，待整个序列中的记录"基本有序"时，再对*全体记录进行依次直接插入排序。
+       * 选择一个增量序列 t1，t2，……，tk，其中 ti > tj, tk = 1；
+       * 按增量序列个数 k，对序列进行 k 趟排序；
+       * 每趟排序，根据对应的增量 ti，将待排序列分割成若干长度为 m 的子序列，分别对各子表进行直接插入排序
+       *仅增量因子为 1 时，整个序列作为一个表来处理，表长度即为整个序列的长度。
+       * 可以参考：https://www.runoob.com/w3cnote/shell-sort.html
+       */
+      function shellSort(arr) {
+        let len = arr.length; //12
+        let gap = Math.floor(len / 2);
+        for (gap; gap > 0; gap = Math.floor(gap / 2)) {
+          //越分越细，当gap===1时候，就是插入排序
+          for (var i = gap; i < len; i++) {
+            for (var j = i - gap; j >= 0; j -= gap) {
+              // arr[j + gap] = arr[j];
+              if (arr[j] > arr[j + 1]) {
+                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+              } else {
+                break; //如果 arr[j] < arr[j + 1]  那么arr[j]前面的都比arr[j+1]小，没必要接着遍历
+              }
+            }
+            console.log(arr);
+          }
+        }
+        return arr;
+      }
+      //console.log(shellSort(arr));
       //快速排序
       const arr1 = [3, 0, 1, 4, 6, 7, 2, 5, 10];
       function quicksort(arr, left, right) {
@@ -91,9 +143,9 @@
       //quicksort(arr1, 0, arr1.length - 1);
 
       //归并排序
-      const arr2 = [2, 5, 3, 1, 4];
+      const arr2 = [2, 5, 3, 4];
       function mergeSort(arr) {
-        console.log(arr,'arr')
+        console.log(arr, "arr");
         if (arr.length < 2) return arr;
         let mid = Math.floor(arr.length / 2);
         let left = arr.slice(0, mid);
@@ -103,7 +155,7 @@
       }
 
       function merge(left, right) {
-        console.log(left, right,'leftright');
+        console.log(left, right, "leftright");
         let result = [];
 
         while (left.length && right.length) {
@@ -113,16 +165,17 @@
             result.push(right.shift());
           }
         }
+        console.log(result,'result1')
         while (left.length) {
           result.push(left.shift());
         }
         while (right.length) {
           result.push(right.shift());
         }
-        console.log(result,'result');
+        console.log(result, "result2");
         return result;
       }
-      //console.log(mergeSort(arr2));
+      console.log(mergeSort(arr2));
     </script>
   </body>
 </html>
