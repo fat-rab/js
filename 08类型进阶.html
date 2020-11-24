@@ -35,6 +35,7 @@
       // console.log([] + []); //'' string
       // console.log([1] + [2]); //'12' string
       // console.log({} + 1); // [object Object]1 string
+      //console.log({} - 1); //NAN
       // console.log(5-2 + "a"); //3a
       // //转字符串场景
       // console.log(1 + "px");
@@ -53,21 +54,23 @@
       // }
       // console.log(!!s); //ture
 
-      //类型转换场景 ：相等性
+      //在使用==的运算中，也会进行隐式类型转换，
       // == 运算符会有类型转换，===不会
       //隐式转换就是系统默认的、不需要加以声明就可以进行的转换
-      //要比较相等性之前，不能将 null 和 undefined 转换成其他任何值，并且规定null 和 undefined 是相等的。
+      //  == 时null 和 undefined 是相等的。
       //全等于状态下，是false，这个很好理解了。它们不属于同一数据类型。 null=>object undefined=>undefined
       //console.log(null == undefined, "0" == 0, 0 == false, "0" == false); //true
 
       //显示类型转换 利用强制类型转换运算符进行转换，这种强制转换过程称为显式转换。
-      //显示类型转换，可以是代码变得清晰易读，推荐在实际编码中使用，最贱的方法就是使用Boolean() Number() String() Object()
+      //显示类型转换，可以是代码变得清晰易读，推荐在实际编码中使用，最简单的方法就是使用Boolean() Number() String() Object()
       //console.log(Object(3)) //等价 new Number(3)  //Number {3}
       //toString()和string() 通常结果一致，，number类型的toString()方法支持第二个参数，指定要转换的进制
       //null 和undefined 没有toString 方法，会报错
       //console.log(typeof(3.123.toFixed(2)))  //number会转换成string
 
       //类型判断
+      // let id = Symbol.for("id");
+      // console.log(typeof id);
       //1 instanceof 无法识别原始数据类型  虽然typeof(null) 是object 但是null 并不是object的实例
       // console.log(
       //   null instanceof Object,
@@ -81,6 +84,76 @@
       // console.log(new Foo().constructor.name); //Foo
 
       //3 Object.prototype.toString.call(obj)  检测对象的内部属性 [[Class ]] 不可以检测自定义的类型
+      //console.log(Object.prototype.toString.call({})); //[object Object]
+
+      //symbol 原始类型，所以不能使用new 命令
+      // 给对象创建属性的时候，不管该属性取什么名字，理论上都存在冲突的可能性，而是用symbol作为对象的属性
+      // 就没有这个问题，因为每一个symbol的值是不想等的,他的值是唯一的，也就意味着给对象添加私有属性成为了可能
+      // let tom = Symbol("key");
+      // let jerry = Symbol("key");
+      // console.log(tom === jerry); //false
+      // let obj = {};
+      // obj[tom] = "aa";
+      // obj[jerry] = "aa";
+      // console.log(obj); //{Symbol(key): "aa", Symbol(key): "aa"}
+
+      // 如果想要在不同的地方使用同一个symbol的时候，可以使用symbol.for方法
+      // let uid = Symbol.for("uid");
+      // let uid2 = Symbol.for("uid");
+      // console.log(uid2 === uid); //true
+      // let obj = {
+      //   [uid]: "123",
+      // };
+      // console.log(obj[uid], obj[uid2]); //123 123
+
+      // 可以用symbol.keyFor()方法 查找和某个symbol关联的key 值 （只能找到symbol.for生成的）
+      // let uid = Symbol.for("uid");
+      // console.log(Symbol.keyFor(uid)); //uid
+      // let uid2 =Symbol('uid')
+      // console.log(Symbol.keyFor(uid2)); //undefined
+
+      // symbol不能转换成数字或者字符串 可以转换成布尔
+      // let uid = Symbol("uid");
+      // console.log(uid+'') //Uncaught TypeError: Cannot convert a Symbol value to a string
+      // console.log(uid / 1); //Uncaught TypeError: Cannot convert a Symbol value to a number
+      // console.log(!!uid) //true
+
+      // 对象的symbol属性使用Object.keys()或者getOwnProperty()都是获取不到的
+      // let id = Symbol.for("id");
+      // let obj = {
+      //   [id]: "123",
+      //   name: "aa",
+      // };
+      // console.log(Object.keys(obj), Object.getOwnPropertyNames(obj)); //["name"]
+      // console.log(Object.getOwnPropertySymbols(obj)) //[Symbol(id)]
+
+      // es6内置了11个symbol，叫做well-Known symbol,他们都是symbol函数的属性，指向
+      // 语言内部使用的方法或者属性，通过他们可以改变语言的原生行为
+      //模板字符串支持所有的合法的js表达式，包括函数调用，也可以嵌套使用
+      // function fn() {
+      //   return true;
+      // }
+      // let a = "tom";
+      // console.log(`${fn() ? `${a}` : ""}`); //tom
+
+      //模板字面量 最前面可以跟一个函数，这个函数叫模板字符串的tag
+      // function myTag(strings, personExp, ageExp) {
+      //   let str0 = strings[0];
+      //   let str1 = strings[1];
+      //   console.log(str0, str1);
+      //   //最后还有一项，但是是空字符串
+      //   //let str2=strings[2] //''
+      //   let ageStr;
+      //   if (ageExp > 99) {
+      //     ageStr = "centenarian";
+      //   } else {
+      //     ageStr = "youngster";
+      //   }
+      //   return str0 + personExp + str1 + ageStr;
+      // }
+      // let person = "tom";
+      // let age = 18;
+      // console.log(myTag`that ${person} is a ${age}`);
     </script>
   </body>
 </html>
