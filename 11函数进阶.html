@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-11-26 13:40:32
- * @LastEditTime: 2020-11-26 14:09:55
+ * @LastEditTime: 2020-11-26 19:20:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \js\11函数进阶.html
@@ -48,45 +48,45 @@
       //   let p = new Person();
       //   console.log(p.name);
       //理解函数的双重职能
-      //函数内部有两个不同的方法：[[Call]]和[[Constructor]],使用普通方式调用时，会执行[[Call]]，使用构造函数调用时，会执行[///[Constructor]]
+      //函数内部有两个不同的方法：[[Call]]和[[Constructor]],使用普通方式调用时，会执行[[Call]]，使用构造函数调用时，会执行[[Constructor]]
       //可以使用new.target避免构造函数当初普通函数调用，
-      //当以构造函数的形式调用函数时，new.target只想的是构造函数本身
-      //   function Person(name) {
-      //     if (new.target === Person) {
-      //       this.name = name;
-      //     } else {
-      //       throw new Error("u must use new with Person");
-      //     }
+      //当以构造函数的形式调用函数时，new.target指向的是构造函数本身
+      // function Person(name) {
+      //   if (new.target === Person) {
+      //     this.name = name;
+      //   } else {
+      //     throw new Error("u must use new with Person");
       //   }
-      //let p1 = new Person("tom");
-      //let p2 = Person(); //Uncaught Error: u must use new with Perso
+      // }
+      // let p1 = new Person("tom");
+      // let p2 = Person(); //Uncaught Error: u must use new with Perso
       //函数参数的传递方式
       //函数的参数，是按值传递(call by value)，还是按引用传递(call by reference)
       //按值传递：函数形参的值是调用函数所传入实参的副本
       //基本类型是按值传递,这一点是毫无疑问的
-      //   let a = 1;
-      //   function fn(a) {
-      //     a = 2;
-      //   }
-      //   fn(a);
-      //   console.log(a); //1
+      // let a = 1;
+      // function fn(a) {
+      //   a = 2;
+      // }
+      // fn(a);
+      // console.log(a); //1
       //按引用传递：函数形参的值是调用函数所传入实参的引用
-      //从下面这段看，引用类型似乎是按引用类型传递的
-      //   let obj = {
-      //     x: 1,
-      //   };
-      //   function fn(obj) {
-      //     obj.y = 2;
-      //   }
-      //   fn(obj);
-      //   console.log(obj); //{x: 1, y: 2}
+      //从下面这段看，引用类型似乎是按引用传递的
+      // let obj = {
+      //   x: 1,
+      // };
+      // function fn(obj) {
+      //   obj.y = 2;
+      // }
+      // fn(obj);
+      // console.log(obj); //{x: 1, y: 2}
       //但是看下面这段代码
-      //   let obj = { x: 1 };
-      //   function fn(obj) {
-      //     obj = 3;
-      //   }
-      //   fn(obj);
-      //   console.log(obj);// {x: 1}
+      // let obj = { x: 1 };
+      // function fn(obj) {
+      //   obj = 3;
+      // }
+      // fn(obj);
+      // console.log(obj);// {x: 1}
       //其实，如果是对象类型的参数 ,他传入的是对象引用的副本，他们引用的是相同的对象，第一段代码是在给实参和形参所引用的对象添加新的属性，后面这一段代码，是将引用地址的副本修改为了3，并不会影响他所引用的对象
       //所以js中，函数的参数是按值传递的，这种说话时没什么问题的，但是有些人不太认同这种说法，他们认为是按共享传递(call by sharing)，这个只是术语上的区别，知道具体是怎么回事就可以了
       //函数应用
@@ -101,47 +101,130 @@
       // page.init();
       //   })();
       //ES6中，可以使用{}代替立即执行函数
-      //   {
-      //     let page = {
-      //       init() {
-      //         console.log("123");
-      //       },
-      //     };
-      //     page.init();
-      //   }
+      // {
+      //   let page = {
+      //     init() {
+      //       console.log("123");
+      //     },
+      //   };
+      //   page.init();
+      // }
 
       //闭包 ：是指访问了另外一个作用域中的变量的函数
       //闭包的作用：阻止变量被垃圾回收
-      //   function a() {
-      //     var x = 1;
-      //     return function () {
-      //       return x + 1;
-      //     };
-      //   }
-      //   let b = a();
-      //   console.log(b()); //在运行完a函数之后，里面的变量x并没有被垃圾回收，应为，return出来匿名函数还对他有引用
+      // function a() {
+      //   var x = 1;
+      //   return function () {
+      //     return x + 1;
+      //   };
+      // }
+      // let b = a();
+      // console.log(b()); //在运行完a函数之后，里面的变量x并没有被垃圾回收，应为，return出来匿名函数还对他有引用
       //闭包加立即执行函数的应用；封装(信息隐藏)
-      //下面的代码虽然可以使用getName得到name ，但是也可以直接获取到name
-    //   let obj = {
-    //     name: "tom",
-    //     getName() {
-    //       return this.name;
-    //     },
-    //   };
-    //   console.log(obj.getName(), obj.name); //tom tom
+      // 下面的代码虽然可以使用getName得到name ，但是也可以直接获取到name
+      //   let obj = {
+      //     name: "tom",
+      //     getName() {
+      //       return this.name;
+      //     },
+      //   };
+      //   console.log(obj.getName(), obj.name); //tom tom
       //下面这段代码就可以做到让别人无法直接访问私有属性
-    //   let obj = (function () {
-    //     let name = "tom";
-    //     return {
-    //       getName() {
-    //         return name;
-    //       },
-    //     };
-    //   })();
-    //   console.log(obj.getName(), obj.name); //tom undefined
+      //   let obj = (function () {
+      //     let name = "tom";
+      //     return {
+      //       getName() {
+      //         return name;
+      //       },
+      //     };
+      //   })();
+      //   console.log(obj.getName(), obj.name); //tom undefined
       //这在js中是一种很有用的技巧叫做模块模式，它可以把所有不必要暴露在外面的内容都封装在模块内部，对外只提供一些公开方法
-      //箭头函数
+      //递归：在函数中调用函数本身
+      // function fib(n) {
+      //   if (n <= 2) {
+      //     return 1;
+      //   }
+      //   return fib(n - 1) + fib(n - 2);
+      // }
+      // fib(10);
+      // 回调 ：同步回调 异步回调
+      // 同步
+      // function a(n, func) {
+      //   ++n;
+      //   func(n);
+      // }
+      // a(1, function (n) {
+      //   console.log(n);
+      // });
+      //柯里化 将使用多个参数的一个函数转换成一系列使用一个参数的函数，并且返回接受余下参数且返回结果的函数
+      // 示例 实现生成唯一ID 的函数，要求
+      // 1 可以传入一个起始ID ，之后返回的id从这个值开始算。
+      // 2还可以传入一个数字 ，返回的值是：上次的id加上这个数字，如果没有传入数字，返回的结果返回上次的id+1
+      // let fn = function (id) {
+      //   return function (num) {
+      //     return num ? id + num : id + 1;
+      //   };
+      // };
+      // let curry = fn("999");
+      // console.log(curry(), curry(3)); //9991 9993
+      //不难发现柯里化需要使用闭包的技术
+      //除了上述的应用外，还有其他的应用，比如函数式编程，
+      // function not(f) {
+      //   return function () {
+      //     let result = f.apply(this, arguments);
+      //     return !result;
+      //   };
+      // }
+      // function even(x) {
+      //   return x % 2 === 0;
+      // }
+      // let odd = not(even);
+      // console.log([1, 3, 5, 7].every(odd)); //true
+      // 箭头函数
+      // 箭头函数和普通函数的区别
+      // 1 没有自己的this,super,arguments和new.target，他们都是距离箭头函数最近的非箭头函数的绑定
+      // 2 不能使用new 来调用
+      // 3 没有原型对象
+      // 4 内部的this无法改变(就是说无法通过call,apply,bind来改变内部的this指向)
+      // 5 形参名称不能重复
       //尾调用优化
-    </script>
+      //在执行某个函数时，如果最后一步，是一个函数调用，并且被调用函数的返回值直接被当前函数返回，
+      //这就是尾调用(tail call)
+      // function a() {
+      //   return b();
+      // }
+      // 尾调用要符合三个要求
+      // 1 尾调用不需要访问当前stack frame中的变量，也就是没有闭包
+      // 2 返回尾调用处时，不要做其他的事情
+      // 3 尾调用的放回值，直接返回给调用它的所在函数的调用者
+      // 尾递归：递归时，如果函数调用本身 时是一个尾调用，则称之为尾递归
+      // function fib(n) {
+      //   if (n === 1 || n === 2) {
+      //     return 1;
+      //   }
+      //   return fib(n - 1) + fib(n - 2);
+      // }
+      // console.log(fib(100));//堆栈溢出
+      //把前两项之和通过a+b实现
+      function fib(n, a = 0, b = 1) {   
+        if (n === 0) return 1;
+        if (n === 1) return b;
+        return fib(n - 1, b, a + b);
+      }
+      console.log(fib(3))
+      // b 有初始值，他就是前一项的结果
+      // 第一项是1(此时没有a,b) 第二项是0+1 (a+b)
+      // a 是前一项结果b (就是当前的前前一项结果)，b就是前一项结果 ,a+b 就是现在的结果
+      //3             4              5
+      //2 1 1         3 1 1          4 1 1
+      //1 1 2         2 1 2          3 1 2
+      //2             1 2 3          2 2 3
+      //              3              1 3 5
+      //                             5
+      
+      
+      //1 1 2 3 5 8
+    </script>         
   </body>
 </html>
