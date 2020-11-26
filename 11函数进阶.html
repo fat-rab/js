@@ -1,0 +1,147 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-11-26 13:40:32
+ * @LastEditTime: 2020-11-26 14:09:55
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \js\11函数进阶.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //this
+      //1 全局环境中的this只想全局对象window
+      //2 函数中的this对象，取决于函数是如何被调用的
+      // 简单调用 =>window
+      // 对象方法调用 =>对象本身
+      // let obj = {
+      //   fn() {
+      //     console.log(this); //obj
+      //     function a() {
+      //       console.log(this); //window
+      //     }
+      //     a();
+      //   },
+      // };
+      // obj.fn();
+      // call和apply调用
+      //   let obj = {
+      //     fn() {
+      //       console.log(this); //obj
+      //       function a() {
+      //         console.log(this); //obj
+      //       }
+      //       a.apply(this); //a.call(this)
+      //     },
+      //   };
+      //   obj.fn();
+      // 构造函数调用
+      //   function Person() {
+      //     this.name = "tom";
+      //   }
+      //   let p = new Person();
+      //   console.log(p.name);
+      //理解函数的双重职能
+      //函数内部有两个不同的方法：[[Call]]和[[Constructor]],使用普通方式调用时，会执行[[Call]]，使用构造函数调用时，会执行[///[Constructor]]
+      //可以使用new.target避免构造函数当初普通函数调用，
+      //当以构造函数的形式调用函数时，new.target只想的是构造函数本身
+      //   function Person(name) {
+      //     if (new.target === Person) {
+      //       this.name = name;
+      //     } else {
+      //       throw new Error("u must use new with Person");
+      //     }
+      //   }
+      //let p1 = new Person("tom");
+      //let p2 = Person(); //Uncaught Error: u must use new with Perso
+      //函数参数的传递方式
+      //函数的参数，是按值传递(call by value)，还是按引用传递(call by reference)
+      //按值传递：函数形参的值是调用函数所传入实参的副本
+      //基本类型是按值传递,这一点是毫无疑问的
+      //   let a = 1;
+      //   function fn(a) {
+      //     a = 2;
+      //   }
+      //   fn(a);
+      //   console.log(a); //1
+      //按引用传递：函数形参的值是调用函数所传入实参的引用
+      //从下面这段看，引用类型似乎是按引用类型传递的
+      //   let obj = {
+      //     x: 1,
+      //   };
+      //   function fn(obj) {
+      //     obj.y = 2;
+      //   }
+      //   fn(obj);
+      //   console.log(obj); //{x: 1, y: 2}
+      //但是看下面这段代码
+      //   let obj = { x: 1 };
+      //   function fn(obj) {
+      //     obj = 3;
+      //   }
+      //   fn(obj);
+      //   console.log(obj);// {x: 1}
+      //其实，如果是对象类型的参数 ,他传入的是对象引用的副本，他们引用的是相同的对象，第一段代码是在给实参和形参所引用的对象添加新的属性，后面这一段代码，是将引用地址的副本修改为了3，并不会影响他所引用的对象
+      //所以js中，函数的参数是按值传递的，这种说话时没什么问题的，但是有些人不太认同这种说法，他们认为是按共享传递(call by sharing)，这个只是术语上的区别，知道具体是怎么回事就可以了
+      //函数应用
+      //立即执行函数表达式，闭包，递归，回调，柯里化
+      //立即执行函数，创建了一个新的函数作用域，里面的局部变量和方法，不会污染全局作用域
+      //   (function () {
+      // let page = {
+      //   init() {
+      //     console.log("123");
+      //   },
+      // };
+      // page.init();
+      //   })();
+      //ES6中，可以使用{}代替立即执行函数
+      //   {
+      //     let page = {
+      //       init() {
+      //         console.log("123");
+      //       },
+      //     };
+      //     page.init();
+      //   }
+
+      //闭包 ：是指访问了另外一个作用域中的变量的函数
+      //闭包的作用：阻止变量被垃圾回收
+      //   function a() {
+      //     var x = 1;
+      //     return function () {
+      //       return x + 1;
+      //     };
+      //   }
+      //   let b = a();
+      //   console.log(b()); //在运行完a函数之后，里面的变量x并没有被垃圾回收，应为，return出来匿名函数还对他有引用
+      //闭包加立即执行函数的应用；封装(信息隐藏)
+      //下面的代码虽然可以使用getName得到name ，但是也可以直接获取到name
+    //   let obj = {
+    //     name: "tom",
+    //     getName() {
+    //       return this.name;
+    //     },
+    //   };
+    //   console.log(obj.getName(), obj.name); //tom tom
+      //下面这段代码就可以做到让别人无法直接访问私有属性
+    //   let obj = (function () {
+    //     let name = "tom";
+    //     return {
+    //       getName() {
+    //         return name;
+    //       },
+    //     };
+    //   })();
+    //   console.log(obj.getName(), obj.name); //tom undefined
+      //这在js中是一种很有用的技巧叫做模块模式，它可以把所有不必要暴露在外面的内容都封装在模块内部，对外只提供一些公开方法
+      //箭头函数
+      //尾调用优化
+    </script>
+  </body>
+</html>

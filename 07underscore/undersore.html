@@ -6,8 +6,8 @@
     <title>Document</title>
   </head>
   <body>
-    <!-- <script src="./undersore.js"></script> -->
-    <script src="./test1.js"></script>
+    <script src="./underscore.js"></script>
+    <!-- <script src="./test1.js"></script> -->
     <script>
       let arr = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, "a", "A"];
       let func = function (key) {
@@ -23,8 +23,8 @@
       //console.log(_.unique(arr, func)); //去重且不区分大小写
       //console.log(_(arr).unique(func));
       //链式调用  chain()开启链式调用 value()结束调用返回结果
-      //console.log(_(arr).chain().unique(func).map(mapf).value());
-      //console.log(_.chain(arr).unique(func).map(mapf).value());
+      console.log(_(arr).chain().unique(func).map(mapf).value());
+      console.log(_.chain(arr).unique(func).map(mapf).value());
     </script>
   </body>
 </html>
