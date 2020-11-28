@@ -1,4 +1,4 @@
-基础数据类型保存在栈内存中
+基础数据类型保存在栈内存中, 函数调用就会入栈， https://developer.mozilla.org/zh-CN/docs/Glossary/Call_stack
 引用数据类型保存在堆内存中
 函数也属于引用类型，
 

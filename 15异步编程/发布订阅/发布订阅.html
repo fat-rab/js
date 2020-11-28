@@ -1,0 +1,71 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-11-28 16:32:02
+ * @LastEditTime: 2020-11-28 16:53:12
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \js\15异步编程\发布订阅\发布订阅.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // ajax("./test1.josn", (res) => {
+        //     ajax("./test2.josn", (res) => {
+        //         ajax("./test3.josn", (res) => {});
+        //     });
+        // });
+        //常用异步编程方式：回调函数,事件发布/订阅,Promise,generator函数,async函数
+        //之前常用的异步编程方式，发布订阅
+        class PubSub {
+            constructor() {
+                this.events = {}; //事件的名字和事件的对应方法通过函数储存方便
+            }
+            publish(eventName, data) {
+                if (this.events[eventName]) {
+                    //订阅的事件对应value是个数组，因为可以多次订阅，使用不同的function进行不同的处理
+                    this.events[eventName].forEach((item) => {
+                        item.apply(this, data);
+                    });
+                }
+            }
+            subscribe(eventName, callback) {
+                if (this.events[eventName]) {
+                    this.events[eventName].push(callback);
+                } else {
+                    this.events[eventName] = [callback];
+                }
+            }
+            unSubscribe(eventName, callback) {
+                if (this.events[eventName]) {
+                    this.events[eventName] = this.events[eventName].filter((item) => {
+                        item !== callback;
+                    });
+                }
+            }
+        }
+
+        const pbb = new PubSub();
+
+        function ajax(data, callback) {}
+        //假装可以执行
+        ajax("./test1.josn", (res) => {
+            pbb.publish("test1Success", res); //通过一个方法发布test1Success 这个事件
+        });
+        //订阅test1Success
+        pbb.subscribe("test1Success", function(res) {
+            ajax("./test2.josn", (res) => {
+                pbb.publish("test2Success", res);
+            });
+        });
+    </script>
+</body>
+
+</html>

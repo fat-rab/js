@@ -1,25 +1,27 @@
 <!--
  * @Author: your name
  * @Date: 2020-11-25 19:44:13
- * @LastEditTime: 2020-11-25 21:12:46
+ * @LastEditTime: 2020-11-28 10:49:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \网易高级前端课程\10原型.html
 -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <script>
-      //原型
-      // 每一个JS对象（null除外）都和一个对象相关联，这个对象就是原型，每一个对象都从原型继承属性
-      // js对象内部包含[[prorotype]]指向原型对象，可以通过__proto__访问
-      // 可以通过Object.getPrototypeOf(obj) 来获取对象的原型属性
-      // 或者通过isPrototypeOf()来判断某个对象是否为另外一个对象的原型
+        //原型
+        // 每一个JS对象（null除外）都和一个对象相关联，这个对象就是原型，每一个对象都从原型继承属性
+        // js对象内部包含[[prorotype]]指向原型对象，可以通过__proto__访问
+        // 可以通过Object.getPrototypeOf(obj) 来获取对象的原型属性
+        // 或者通过isPrototypeOf()来判断某个对象是否为另外一个对象的原型
         // let obj = {};
         // console.log(Object.getPrototypeOf(obj) === Object.prototype); //true
         // console.log(Object.prototype.isPrototypeOf(obj)); //true
@@ -29,38 +31,38 @@
         // p1 = Object.create(p);
         // console.log(Object.getPrototypeOf(p1) === p); //true
 
-      //设置对象的原型属性
-      //1 直接操作私有属性，不推荐
-          // let a = { x: 1 };
-          // let b = {
-          //   __proto__: a,
-          // };
-          // console.log(Object.getPrototypeOf(b) === a); //true
-      //2 Object.setPrototyprOf(a,b) 两个参数，第一个设置原型的对象，第二个为设置对象的新原型
-      //如果第二个参数不是对象或者是null ，则会报错
-      //通过这个方法改变原型，性能比较差，不推荐使用，尽量使用上文中的Object.create()
-      //  let a = { x: 1 };
-      //  let b = {};
-      //  Object.setPrototypeOf(b, a);
-      // console.log(Object.getPrototypeOf(b) === a); //true
-      //es6中新增了一个关键字super 可以在类中使用
-      //对象中的super关键字指向该对象的原型(super不能单独使用，所以无法打印出来)
-      //   let obj1 = {
-      //     fn1() {
-      //       return "fn1";
-      //     },
-      //   };
-      //   let obj2 = {
-      //     fn1() {
-      //       return super.fn1();
-      //     },
-      //   };
-      //   Object.setPrototypeOf(obj2, obj1);
-      //   console.log(obj2.fn1()); //fn1
+        //设置对象的原型属性
+        //1 直接操作私有属性，不推荐
+        // let a = { x: 1 };
+        // let b = {
+        //   __proto__: a,
+        // };
+        // console.log(Object.getPrototypeOf(b) === a); //true
+        //2 Object.setPrototyprOf(a,b) 两个参数，第一个设置原型的对象，第二个为设置对象的新原型
+        //如果第二个参数不是对象或者是null ，则会报错
+        //通过这个方法改变原型，性能比较差，不推荐使用，尽量使用上文中的Object.create()
+        //  let a = { x: 1 };
+        //  let b = {};
+        //  Object.setPrototypeOf(b, a);
+        // console.log(Object.getPrototypeOf(b) === a); //true
+        //es6中新增了一个关键字super 可以在类中使用
+        //对象中的super关键字指向该对象的原型(super不能单独使用，所以无法打印出来)
+        //   let obj1 = {
+        //     fn1() {
+        //       return "fn1";
+        //     },
+        //   };
+        //   let obj2 = {
+        //     fn1() {
+        //       return super.fn1();
+        //     },
+        //   };
+        //   Object.setPrototypeOf(obj2, obj1);
+        //   console.log(obj2.fn1()); //fn1
 
-      //原型链
-      //当我们访问一个对象的属性或者方法时，会在对象本身找，如果没有则会到他的原型对象上找，如果
-      //还没有就回到原型对象的原型对象上去找，找到则返回对应的值，如果直到原型对象为NULL，则返回undefined
+        //原型链
+        // 当我们访问一个对象的属性或者方法时，会在对象本身找，如果没有则会到他的原型对象上找，如果
+        // 还没有就回到原型对象的原型对象上去找，找到则返回对应的值，如果直到原型对象为NULL，则返回undefined
         // function Person() {}
         // Person.prototype.name = "jerry";
         // Person.prototype.sayName = function () {
@@ -72,25 +74,26 @@
         // console.log(person1.sayName === person2.sayName); //true
         // console.log(person1.sayName === Person.prototype.sayName); //true
         // console.log(Person.prototype.isPrototypeOf(person1)); //true
-      // 自身普通属性prototype指向Person.prototype(只有函数function有)
-      // 原型属性[[prototype]] 指向 Function.prorotype
-      //console.log(Person.prototype, Person.__proto__);
+        // 自身普通属性prototype指向Person.prototype(只有函数function有)
+        // 原型属性[[prototype]] 指向 Function.prorotype
+        //console.log(Person.prototype, Person.__proto__);
 
-      //实践中的原型
-      // 1 查询属性会遍历原型链，有一定的性能问题，要注意代码中的原型链长度，
-      // 并在必要时分解，以避免潜在的性能问题
-      // 2原型上的属性会被所有实例共享，如果属性值是对象类型，则某个实例更改之后会影响其他实例
-      // 原始类型则不会
-      function Person() {}
-      Person.prototype = {
-        name: "tom",
-        book: [],
-      };
-      let p1 = new Person();
-      let p2 = new Person();
-      p1.name = "jerry";
-      p1.book.push("tom and jerry"); //tom
-      console.log(p2.name, p2.book); //tom and jerry
+        //实践中的原型
+        // 1 查询属性会遍历原型链，有一定的性能问题，要注意代码中的原型链长度，
+        // 并在必要时分解，以避免潜在的性能问题
+        // 2原型上的属性会被所有实例共享，如果属性值是对象类型，则某个实例更改之后会影响其他实例
+        // 原始类型则不会
+        function Person() {}
+        Person.prototype = {
+            name: "tom",
+            book: [],
+        };
+        let p1 = new Person();
+        let p2 = new Person();
+        p1.name = "jerry";
+        p1.book.push("tom and jerry"); //tom
+        console.log(p2.name, p2.book); //tom and jerry
     </script>
-  </body>
+</body>
+
 </html>

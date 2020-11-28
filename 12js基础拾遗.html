@@ -1,0 +1,48 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-11-28 09:19:56
+ * @LastEditTime: 2020-11-28 11:05:24
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \js\12js基础拾遗.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //prototype   函数对象的属性
+        //__proto__   任意对象的属性 ，指向自身构造函数的原型对象
+        // let a = [];
+        // console.log(Array);
+        // console.log(a.__proto__ === Array.prototype); //true
+        function Person() {
+            this.test = function() {
+                return 1;
+            };
+        }
+        Person.prototype = {
+            test() {
+                return 2;
+            },
+        };
+        let p = new Person();
+        console.log(p.prototype); //undefined
+        console.log(p, p.test()); //Person {test: ƒ} 1  构造函数中的this 相当于给实例扩展了 test方法，每个实例都会有这个方法，所以如果有需要共享的方法，可以封装在Person.prototype 里面
+        console.log(p.__proto__ === Person.prototype); //true
+        console.log(p.__proto__.__proto__ === Object.prototype); //true
+        console.log(typeof Object); //function 这是一个构造函数
+        console.log(p.__proto__.__proto__.__proto__); //null
+        //对象方法的检索机制   
+        //   当我们访问一个对象的属性或者方法时，会在对象本身找，如果没有则会到他的原型对象上找，如果
+        // 还没有就回到原型对象的原型对象上去找，找到则返回对应的值，如果直到原型对象为NULL，则返回undefined
+    </script>
+</body>
+
+</html>
