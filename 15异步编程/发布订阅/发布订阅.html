@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-11-28 16:32:02
- * @LastEditTime: 2020-11-28 16:53:12
+ * @LastEditTime: 2020-11-28 17:19:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \js\15异步编程\发布订阅\发布订阅.html
@@ -26,7 +26,7 @@
         //之前常用的异步编程方式，发布订阅
         class PubSub {
             constructor() {
-                this.events = {}; //事件的名字和事件的对应方法通过函数储存方便
+                this.events = {};
             }
             publish(eventName, data) {
                 if (this.events[eventName]) {
