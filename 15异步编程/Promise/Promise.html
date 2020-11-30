@@ -1,0 +1,115 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-11-30 15:38:35
+ * @LastEditTime: 2020-11-30 17:58:55
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \js\15异步编程\Promise\Promise.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //Promise/A+规范
+        //1 术语
+        // promise ：一个有then方法的对象或者函数，行为复核本规范
+        //thenable ：一个定义了then方法的对象或者函数
+        //值，value：任何javaScript的合法值
+        //异常，exception：throw 语句抛出的值
+        //拒绝原因，reason：一个标示promise被拒绝原因的值
+        //2 要求
+        //2-1 promise的状态
+        //pending(等待) fulfilled(完成)  rejected(拒绝)
+        //如果是pengding状态，则可以转换成fulfilled 或者rejected状态
+        //如果是fulfilled状态，则不能装换成其他状态，且必须带有value ，且这个值不能被改变
+        //如果是rejected状态，则不能装换成其他状态，且必须带有reason ，且这个值不能被改变
+        //2-2 then方法
+        //2-2-1 then方法的参数
+        //一个Promise必须提供一个then方法来获取其value或者reason
+        //Promise的then 方法接受两个参数:
+        //promise1.then(onFulfilled, onRejected)
+        //onFulfilled 实在Promise完成之后被调用，onRejected是在Promise被拒绝之后被调用，并且只能调用一次
+        //2-2-2 then方法的调用
+        //可以调用多次
+        //then 方法可以被同一个Promise 方法调用多次，那么onFulfilled, onRejected会按照注册顺序调用
+        //2-3 then方法必须返回一个返回值:Promise
+        // let promise2 = promise1.then(onFulfilled, onRejected);
+        //Promise2的值和状态
+        //2-3-1
+        //onFulfilled不是函数且promise1的state是fulfilled 则promise2的state:fulfilled value:同promise1
+        //onRejected不是函数且promise1的state是rejeceted 则promise2的state:rejeceted value:同promise1
+        //onRejected或者onFulfilled return了一个值X，则进入解析过程
+        //promise解析过程 可以提取一个抽象模型resolve(promise,x)  x是then的参数返回的值
+        //1 如果promise 和x指向同一个值
+        //2 如果x是一个promise
+        //3 如果x是一个对象或者函数
+        //4如果x不是对象也不是函数
+        //如果只用文字解释上述情况可能比较难懂，下面用代码解释
+        function resolve(promise, x) {
+            //如果promise 和x指向同一个值,以 TypeError 为原因拒绝执行 promise
+            if (x === promise) {
+                return reject(promise, new TypeError("cant be the same"));
+            }
+            if (isPromise(x)) {
+                if (x.state === "pending") {
+                    return x.then(
+                        () => {
+                            resolve(promise, x.value);
+                        },
+                        () => {
+                            reject(promise, x.value);
+                        }
+                    );
+                }
+                if (x.state === "fulfilled") {
+                    return fulfill(promise, x.value);
+                }
+                if (x.state === "rejected") {
+                    return reject(promise, x.value);
+                }
+            } else if (isObject(x) || isFunction(x)) {
+                let then;
+                try {
+                    then = x.value;
+                } catch (e) {
+                    return jeject(promise, e);
+                }
+                if (isFunction(then)) {
+                    let isCalled = false;
+                    try {
+                        then.call(
+                            x,
+                            function resolvePromise(y) {
+                                if (isCalled) return;
+                                isCalled = true;
+                                resolve(promise, y);
+                            },
+                            function rejectPrommise(r) {
+                                if (isCalled) return;
+                                isCalled = true;
+                                reject(promise, r);
+                            }
+                        );
+                    } catch (e) {
+                        if (!isCalled) return jeject(promise, e);
+                    }
+                } else {
+                    return fulfill(promise, x);
+                }
+            } else {
+                return fulfill(promise, x);
+            }
+        }
+        //ES6 Promise API
+        //Promise 实践
+    </script>
+</body>
+
+</html>
