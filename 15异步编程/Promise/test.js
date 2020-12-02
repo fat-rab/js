@@ -1,4 +1,3 @@
-const Promise = require("./手写promise");
 
 statusMap = {
     PENDING: "pending",
@@ -28,12 +27,89 @@ function isFunction(fn) {
     );
 }
 
+function isPromise(x) {
+    return x instanceof Promise
+}
+
+function isObject(obj) {
+    return (
+        Object.prototype.toString.call(obj).toLocaleLowerCase() ===
+        "[object object]"
+    );
+}
+
 function runCbs(list, value) {
     list.forEach((cb) => cb(value));
 }
 
 function resolvePromise(promise, x) {
-    // todo
+    //如果promise和x指向同一个值
+    if (promise === x) {
+        rejectedPromise(promise, new TypeError('cant be same'))
+        return
+    }
+    //如果x是一个promise
+    if (isPromise(x)) {
+        //如果x的状态是fulfilled，则将x的value 作为promise的value，将他的状态改为fulfilled
+        if (x.status === statusMap.FULFILLED) {
+            fulfilledPromise(promise, x.value)
+            return
+        }
+        if (x.status === statusMap.REJECTED) {
+            rejectedPromise(promise, x.reason)
+            return
+        }
+        if (x.status === statusMap.PENDING) {
+            x.then(
+                () => {
+                    fulfilledPromise(promise, x.value)
+                },
+                () => {
+                    rejectedPromise(promise, x.value)
+                }
+            )
+            return
+        }
+        return
+    }
+    if (isObject(x) || isFunction(x)) {
+        //thenable
+        let then
+        let isCall = false
+        try {
+            then = x.then
+        } catch (error) {
+            rejectedPromise(promise, error)
+            return
+        }
+        if (isFunction(x)) {
+            try {
+                then.call(this,
+                    (y) => {
+                        if (isCall) return
+                        isCall = true
+                        resolvePromise(promise, y)
+                    },
+                    (r) => {
+                        if (isCall) return
+                        isCall = true
+                        rejectedPromise(promise, r)
+                    }
+                )
+            } catch (error) {
+                if (isCall) return
+                isCall = true
+                rejectedPromise(promise, error)
+            }
+            return
+        } else {
+            fulfilledPromise(promise, x)
+            return
+        }
+    } else {
+        fulfilledPromise(promise, x)
+        return
+    }
 }
 class Promise {
     constructor(fn) {
@@ -44,7 +120,7 @@ class Promise {
         this.rejectedCbs = [];
         fn(
             (value) => {
-                fulfilledPromise(this, value);
+                resolvePromise(this, value);
             },
             (reason) => {
                 rejectedPromise(this, reason);
@@ -53,7 +129,7 @@ class Promise {
     }
     then(onFulfilled, onRejected) {
         let promise1 = this;
-        let promise2 = new Promise(() => {});
+        let promise2 = new Promise(() => { });
         if (promise1.status === statusMap.FULFILLED) {
             //如果onFulfilled不是一个函数，则忽略
             if (isFunction(onFulfilled)) {
@@ -125,9 +201,3 @@ class Promise {
         return promise2;
     }
 }
-// let p = new Promise((resolve, reject) => {
-//   setTimeout(() => {
-//     console.log("执行");
-//     resolve("then执行");
-//   }, 2000);
-// }).then((res) => {});
