@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script>
+        //Generator函数的应用
+        //使用回调
+        //   $.get(
+        //     "https://www.easy-mock.com/mock/5fc8abfc584b91646b4cf958/example/mock",
+        //     (res) => {
+        //       console.log(res, 1);
+        //       $.get(
+        //         "https://www.easy-mock.com/mock/5fc8abfc584b91646b4cf958/example/mock",
+        //         (res) => {
+        //           console.log(res, 2);
+        //         }
+        //       );
+        //     }
+        //   );
+
+        //使用Generator
+        function* generator() {
+            function getData(url) {
+                $.get(url, (res) => {
+                    g.next(res.data);
+                });
+            }
+            let r1 = yield getData(
+                "https://www.easy-mock.com/mock/5fc8abfc584b91646b4cf958/example/mock"
+            );
+            console.log(r1, "r1");
+            let r2 = yield getData(
+                "https://www.easy-mock.com/mock/5fc8abfc584b91646b4cf958/example/mock"
+            );
+            console.log(r2, "r2");
+        }
+        let g = generator();
+        g.next();
+    </script>
+</body>
+
+</html>
