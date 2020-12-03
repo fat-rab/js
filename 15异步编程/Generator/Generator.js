@@ -104,3 +104,43 @@
 //一个线程存在多个协程，但是同时只能执行一个
 //generator函数是协程在es6实现
 // yield挂起x协程（交给其他协程）,next唤醒x协程
+
+//thunk
+//求值策略：传值调用，传名调用
+//传值调用，sum(x+1,x+2) 计算最终的结果之间，会将x+1和x+2计算出来
+//传名调用  sum(x+1,x+2) 等到用到x+1或者x+2的时候才会计算值 
+//thunk函数传名调用的方法之一
+//可以实现自动执行Generator
+
+//使用thunk方法
+const fs = require('fs')
+function thunk(fn) {
+    return function (...args) {
+        return function (callback) {
+            return fn.call(this, ...args, callback);
+        };
+    };
+}
+let readFileThunk = thunk(fs.readFile);
+function* generator() {
+    console.log('1231')
+    let r1 = yield readFileThunk('./test1.json');
+    console.log("r1");
+    let r2 = yield readFileThunk('./test2.json');
+    console.log("r2");
+    let r3 = yield readFileThunk('./test3.json');
+    console.log("r3");
+}
+
+function run(fn) {
+    let gen = fn();
+    function next(err, data) {
+        console.log(data, "data");
+        let result = gen.next(data);
+        if (result.done) return;
+        result.value(next);
+    }
+    next();
+}
+run(generator);
+
