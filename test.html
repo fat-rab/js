@@ -17,36 +17,14 @@
 
 <body>
     <script>
-        let lightList = [{
-            color: "red",
-            second: 3,
-        }, {
-            color: "green",
-            second: 2,
-        }, {
-            color: "yellow",
-            second: 1,
-        }, ];
-        //对list进行某种操作
-        function loopLight(list) {
-            let promise = Promise.resolve();
-            list.forEach((item) => {
-                promise = promise.then(() => {
-                    return lightUp(item.color, item.second);
-                });
+        async function test() {
+            console.log(1);
+            await Promise.reject().catch(() => {
+                console.log(2);
             });
+            console.log(3);
         }
-        //亮灯
-        function lightUp(color, second) {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    console.log(color);
-                    resolve();
-                }, second * 1000);
-            });
-        }
-
-        loopLight(lightList);
+        test();
     </script>
 </body>
 

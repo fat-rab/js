@@ -5,8 +5,8 @@
 //     let i = 0;
 //     return {
 //         next: function() {
-//             let done = i >= items.length;
-//             let value = !done ? items[i++] : undefined;
+// let done = i >= items.length;
+// let value = !done ? items[i++] : undefined;
 //             return {
 //                 done: done,
 //                 value: value,
@@ -21,7 +21,7 @@
 // console.log(iterator.next()); //{ done: true, value: undefined }
 
 //Generator(生成器)
-//ES5异步百年城解决方案
+//ES6异步编程解决方案
 //声明：通过function*声明
 //返回值：符合可迭代协议和迭代器协议的生成器对象
 //在执行时能暂停，又能从暂停处继续执行
@@ -98,49 +98,67 @@
 // console.log(g.next(1)); //{value:3,done:false}
 // console.log(g.throw(new Error("error"))); //{value:9,done:false}
 // console.log(g.next()); //{value:undefined,done:true}
-//Generator函数的学习原理
+//Generator函数的原理
 //协程 :可以暂停执行（暂停的表达式称为暂停点),可以从挂起点恢复（保留其原始参数和局部变量）
 
 //一个线程存在多个协程，但是同时只能执行一个
 //generator函数是协程在es6实现
 // yield挂起x协程（交给其他协程）,next唤醒x协程
-
+// function* generator() {
+//     function test(num) {
+//         setTimeout(() => {
+//             console.log(num);
+//             g.next(num);
+//         }, 2000);
+//     }
+//     let r1 = yield test(1);
+//     console.log(r1, "r1");
+//     let r2 = yield test(2);
+//     console.log(r2, "r2");
+// }
+// let g = generator();
+// g.next();
 //thunk
 //求值策略：传值调用，传名调用
 //传值调用，sum(x+1,x+2) 计算最终的结果之间，会将x+1和x+2计算出来
-//传名调用  sum(x+1,x+2) 等到用到x+1或者x+2的时候才会计算值 
+//传名调用  sum(x+1,x+2) 等到用到x+1或者x+2的时候才会计算值
 //thunk函数传名调用的方法之一
 //可以实现自动执行Generator
 
 //使用thunk方法
-const fs = require('fs')
+const fs = require("fs");
+
+// fs.readFile.call(this, "./test1.txt", (data, err) => {
+//     console.log(data, err);
+// });
+
 function thunk(fn) {
-    return function (...args) {
-        return function (callback) {
+    return function(...args) {
+        return function(callback) {
             return fn.call(this, ...args, callback);
         };
     };
 }
 let readFileThunk = thunk(fs.readFile);
+
 function* generator() {
-    console.log('1231')
-    let r1 = yield readFileThunk('./test1.json');
-    console.log("r1");
-    let r2 = yield readFileThunk('./test2.json');
-    console.log("r2");
-    let r3 = yield readFileThunk('./test3.json');
-    console.log("r3");
+    let r1 = yield readFileThunk("./test1.txt");
+    console.log(r1, "r1");
+    let r2 = yield readFileThunk("./test1.txt");
+    console.log(r2, "r2");
+    let r3 = yield readFileThunk("./test1.txt");
+    console.log(r3, "r3");
 }
 
 function run(fn) {
     let gen = fn();
-    function next(err, data) {
-        console.log(data, "data");
+
+    function go(data, err) {
+        console.log(data, err, "data123");
         let result = gen.next(data);
         if (result.done) return;
-        result.value(next);
+        result.value(go);
     }
-    next();
+    go();
 }
 run(generator);
-
