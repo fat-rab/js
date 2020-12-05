@@ -1,0 +1,62 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-12-05 11:15:53
+ * @LastEditTime: 2020-12-05 13:58:21
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \js\17webWorkers多线程机制.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 使用 browser-sync 启动node服务 browser-sync start -s -->
+    <script src="./webWorkers.js"></script>
+    <!-- 嵌入式worker -->
+    <!-- <script id="worker" type="javascript/worker">
+        function fibonacci(n) { if (n === 1 || n === 2) { return 1; } return fibonacci(n - 1) + fibonacci(n - 2); } postMessage(fibonacci(40));
+    </script> -->
+    <script>
+        //Web workers介绍
+        //http://www.ruanyifeng.com/blog/2018/07/web-worker.html
+        //为js创造多线程环境，允许主线程创建Worker线程，将一些任务分配给后者运行
+        //可以将一些计算密集型或者高延迟任务交给worker负担
+
+        //Web Worker有几个使用注意点
+        //1 同源限制 分配给worker线程运行的脚本文件，必须与主线程的脚本文件同源
+        //2 通信联系 Worker线程和主线陈不在同一个上下文环境（他们的全局对象不一样，所以无法操作DOM，不能执行alert和confirm），他们不能直接通信，必须通过消息完成
+        //3 DOM限制  Worker线程所在的全局对象，与主线程不一样，无法读取主线程所在网页的DOM对象，也无法使用document,window,parent这些对象，但是可以使用navigator和Location对象
+        //4 脚本限制 Worker线程不能使用alert()和confirm()，但是可以使用xmlhttpRequest对象发送AJAX请求
+        //5 文件限制，Worker线程不能读取本地文件
+
+        //嵌入式worker
+        //这种写发不够优雅，可以使用封装好的webworkify
+        // let workerScript = document.querySelector("#worker").textContent;
+        // let blob = new Blob([workerScript], {
+        //     type: "text/javascript",
+        // });
+        // //console.log(blob);//Blob {size: 149, type: "text/javascript"}
+        // let worker = new Worker(window.URL.createObjectURL(blob)); //"blob:null/50d35c25-37bb-41ee-bc0b-200dbb1aae24"
+        // worker.onmessage = function(e) {
+        //     console.log("收到消息", e);
+        // };
+        //API
+        //1 self.name Worker的名字，可以在创建时指定，用来区分多个worker let worker=new Worker('worker.js',{name:'worker'})
+        //2 self.onmessage
+        //3 self.postMessage()
+        //4 self.onmessageerror:指定messageerror事件的监听函数，发送的数据无法序列化成字符串是，会触发这个事件
+        //5 self.close():关闭worker线程
+        //6 self.importScripts()：加载 JS 脚本,可以同时加载多个 importScripts('script1.js', 'script2.js');
+        //Web Workers场景
+        //解决的痛点：js执行复杂运算时候阻塞了页面渲染
+        //使用场景：复杂运算，渲染优化，流媒体数据处理（前两种比较少见，大多是第三种）
+    </script>
+</body>
+
+</html>

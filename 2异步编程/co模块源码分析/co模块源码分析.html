@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./co.js"></script>
+    <script>
+        let a = co(function*() {
+            let result = yield Promise.resolve(true);
+            return result;
+        });
+        console.log(a);
+        //todo  这种框架类源码后续研究
+    </script>
+</body>
+
+</html>

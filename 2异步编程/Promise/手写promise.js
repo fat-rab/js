@@ -165,7 +165,8 @@ class Promise {
             setTimeout(() => {
                 try {
                     const x = onFulfilled(promise1.value);
-                    //x的值会影响到新生成的promise2
+                    console.log(x, 'x')
+                        //x的值会影响到新生成的promise2
                     resolvePromise(promise2, x);
                 } catch (error) {
                     rejectedPromise(promise2, error);
@@ -224,12 +225,12 @@ class Promise {
     }
 }
 
-Promise.deferred = function() {
-    const deferred = {};
-    deferred.promise = new Promise((resolve, reject) => {
-        deferred.resolve = resolve;
-        deferred.reject = reject;
-    });
-    return deferred;
-};
-module.exports = Promise;
+// Promise.deferred = function() {
+//     const deferred = {};
+//     deferred.promise = new Promise((resolve, reject) => {
+//         deferred.resolve = resolve;
+//         deferred.reject = reject;
+//     });
+//     return deferred;
+// };
+// module.exports = Promise;
