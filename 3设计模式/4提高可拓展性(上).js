@@ -25,7 +25,6 @@
  * 应用场景：调用命令充满不确定性
  */
 
-
 //基本结构
 //1适配器模式
 //用log代替console.log
@@ -48,7 +47,6 @@
 //      读取action 里面的实现
 //     return function excute() { }
 // })()
-
 
 //应用示例
 //1适配器模式
@@ -80,7 +78,6 @@
 //         _default[key] = obj[key] ? obj[key] : _default[key]
 //     }
 // }
-
 
 //装饰者模式的示例
 /**
@@ -118,7 +115,6 @@
 //     return result
 // })
 
-
 //命令模式的示例
 /**
  * 1 绘图命令
@@ -135,17 +131,17 @@
 // myC.drawRect()
 
 //封装
-// let canvasCommand = function () {
-//     let action = {
-//         drawCircle() { },
-//         drawRect() { }
-//     }
-// return function excute(commander) {
-//     commander.forEach(item => {
-//         action[item.key](item.config)
+// let canvasCommand = (function () {
+//   let action = {
+//     drawCircle() {},
+//     drawRect() {},
+//   };
+//   return function excute(commander) {
+//     commander.forEach((item) => {
+//       action[item.key](item.config);
 //     });
-// }
-// }
+//   };
+// })();
 // canvasCommand([{ type: 'drawCircle', config: {} }, { type: 'drawCircle', config: {} }, { type: 'drawCircle', config: {} }])
 /**
  * 2 绘图命令
@@ -161,43 +157,46 @@
  * 数据=>直接调用api(不封装)
  * 数据=>excute命令解析=>调用api(封装)
  */
-let createImg = function () {
-    let action = {
-        create(obj) {
-            let htmlArr = [];
-            let htmlString = '';
-            let htmlTemplate = "<div><img src='{{img-url}}'></img></div><h2>{{img-title}}</h2>";
-            let displayWay = {
-                normal(arr) {
-                    return arr
-                },
-                reserve(arr) {
-                    return arr.reserve()
-                }
-            }
-            obj.imgArr.forEach(item => {
-                let _html
-                _html = htmlTemplate.replace('{{img-url}}', item.img).replace('{{img-title}}', item.title)
-                htmlArr.push(_html)
-            });
-            htmlArr = displayWay[obj.type](htmlArr)
-            htmlString = htmlArr.join(',')
-            return "<div>" + htmlString  + "</div>"
+let createImg = (function () {
+  let action = {
+    create(obj) {
+      let htmlArr = [];
+      let htmlString = "";
+      let htmlTemplate =
+        "<div><img src='{{img-url}}'></img></div><h2>{{img-title}}</h2>";
+      let displayWay = {
+        normal(arr) {
+          return arr;
         },
-        display(obj) {
-            let _html = this.create(obj)
-            obj.target.innerHtml = _html
-        }
+        reserve(arr) {
+          return arr.reserve();
+        },
+      };
+      obj.imgArr.forEach((item) => {
+        let _html;
+        _html = htmlTemplate
+          .replace("{{img-url}}", item.img)
+          .replace("{{img-title}}", item.title);
+        htmlArr.push(_html);
+      });
+      htmlArr = displayWay[obj.type](htmlArr);
+      htmlString = htmlArr.join(",");
+      return "<div>" + htmlString + "</div>";
+    },
+    display(obj) {
+      let _html = this.create(obj);
+      obj.target.innerHtml = _html;
+    },
+  };
+  return function excute(obj) {
+    let _default = {
+      imgArr: [{ img: "xxx", title: "xxx" }],
+      type: "normal",
+      target: document.body,
+    };
+    for (const key in _default) {
+      _default[key] = obj[key] ? obj[key] : _default[key];
     }
-    return function excute(obj) {
-        let _default = {
-            imgArr: [{ img: 'xxx', title: 'xxx' }],
-            type: "normal",
-            target: document.body
-        }
-        for (const key in _default) {
-            _default[key] = obj[key] ? obj[key] : _default[key]
-        }
-        action.display(_default)
-    }
-}
+    action.display(_default);
+  };
+})();
