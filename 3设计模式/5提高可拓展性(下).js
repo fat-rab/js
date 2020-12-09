@@ -40,6 +40,7 @@
 /**
  * 职责链模式
  * 把要做的事情组织为一条有序的链条，通过这条链条传递消息来完成功能，适用于不涉及到复杂异步的操作
+ * 将要做的事情拆分成模块,模块之间制作自己的事情，
  */
 // function mode1() {}
 // function mode2() {}
@@ -91,7 +92,67 @@ function comment() {
 function index() {
   return obser.fire("getHot");
 }
+
 /**
- * 转盘
- * 每转一圈，速度变快
+ * Axios的拦截器
+ * axios拦截器设计，可以看成用职责链思想处理的请求
  */
+
+function axios() {
+  this.interceptors = {
+    request: new interceptorsManner(),
+    response: new interceptorsManner(),
+  };
+}
+axios.prototype.request = function () {
+  let chain = [dispathRequest, undefined]; //dispathRequest 发送请求的方法
+  let promise = Promise.resolve();
+  this.interceptors.request.handlers.forEach((interceptors) => {
+    chain.unshift(interceptors.fulfilled, interceptors.rejected);
+  });
+  this.interceptors.response.handlers.forEach((interceptors) => {
+    chain.unshift(interceptors.fulfilled, interceptors.rejected);
+  });
+  while (chain.length) {
+    promise = promise.then(chain.shift(), chain.shift());
+  }
+};
+function interceptorsManner() {
+  this.handlers = [];
+}
+interceptorsManner.prototype.use((fulfilled, rejected) => {
+  this.handlers.push({
+    fulfilled,
+    rejected,
+  });
+});
+
+//访问者模式
+/**
+ * 不同角色访问数据
+ * 假设一个公司的财务报表，财务关心支出和收入，老板关心盈利
+ */
+
+function report() {
+  this.profit = "";
+  this.in = "";
+  this.out = "";
+}
+
+function boss() {}
+boss.prototype.get = function (data) {};
+function hr() {}
+hr.prototype.get = function (data1, data2) {};
+function vistor(data, man) {
+  let handle = {
+    boss(data) {
+      man.get(data.profit);
+    },
+    hr(data) {
+      man.get(data.in, data.out);
+    },
+  };
+  handle(man.constructor.name)(data);
+}
+vistor(new report(), new boss());
+vistor(new report(), new hr());
