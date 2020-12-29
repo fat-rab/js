@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-11-25 19:44:13
- * @LastEditTime: 2020-11-28 10:49:34
+ * @LastEditTime: 2020-12-29 20:20:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \网易高级前端课程\10原型.html
@@ -74,10 +74,26 @@
         // console.log(person1.sayName === person2.sayName); //true
         // console.log(person1.sayName === Person.prototype.sayName); //true
         // console.log(Person.prototype.isPrototypeOf(person1)); //true
-        // 自身普通属性prototype指向Person.prototype(只有函数function有)
-        // 原型属性[[prototype]] 指向 Function.prorotype
-        //console.log(Person.prototype, Person.__proto__);
+        // 自身普通属性prototype(所有对象都有)指向Person.prototype(只有函数function有)
+        //constructor 之后作为构造函数的prototype才有
+        // 原型属性[[prototype]](__proto__) 指向 Function.prorotype
 
+        //总结 详见图片
+        //1 原型对象（构造函数的prototype）的constructor指向构造函数对象，原型对象的__proto__最终指向Object.prototype
+        //2 构造函数的prototype指向原型对象，构造函数的__proto__指向Function.prorotype
+        //3 实例的__proto__指向构造函数的prototype
+        //4 Function.prorotype.constructor指向构造函数Function
+        //5 Function.prorotype.__proto__指向Object.prototype
+        //console.log(Person.prototype, Person.__proto__);//Function.prototype ,Person.prototype
+        //this
+        //1函数调用 浏览器端指向window
+        //2作为方法调用（method）指向调用对象
+        //3作为构造函数调用 指向生成的实例
+        //4bind apply(一个一个传入) call(传入数组) 指向传入的参数
+        //bind 返回一个新的函数
+        //5 箭头函数 this是外层的块级作用域
+        //继承
+        //子类的原型对象.__proto__指向父类的原型对象
         //实践中的原型
         // 1 查询属性会遍历原型链，有一定的性能问题，要注意代码中的原型链长度，
         // 并在必要时分解，以避免潜在的性能问题
