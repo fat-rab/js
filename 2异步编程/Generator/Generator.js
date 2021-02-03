@@ -2,17 +2,17 @@
 //迭代器
 //有next方法，执行返回结果对象
 // function createIterator(items) {
-//     let i = 0;
-//     return {
-//         next: function() {
-// let done = i >= items.length;
-// let value = !done ? items[i++] : undefined;
-//             return {
-//                 done: done,
-//                 value: value,
-//             };
-//         },
-//     };
+//   let i = 0;
+//   return {
+//     next: function () {
+//       let done = i >= items.length;
+//       let value = !done ? items[i++] : undefined;
+//       return {
+//         done: done,
+//         value: value,
+//       };
+//     },
+//   };
 // }
 // let iterator = createIterator([1, 2, 3]);
 // console.log(iterator.next()); //{ done: false, value: 1 }
@@ -133,32 +133,32 @@ const fs = require("fs");
 // });
 
 function thunk(fn) {
-    return function(...args) {
-        return function(callback) {
-            return fn.call(this, ...args, callback);
-        };
+  return function (...args) {
+    return function (callback) {
+      return fn.call(this, ...args, callback);
     };
+  };
 }
 let readFileThunk = thunk(fs.readFile);
 
 function* generator() {
-    let r1 = yield readFileThunk("./test1.txt");
-    console.log(r1, "r1");
-    let r2 = yield readFileThunk("./test1.txt");
-    console.log(r2, "r2");
-    let r3 = yield readFileThunk("./test1.txt");
-    console.log(r3, "r3");
+  let r1 = yield readFileThunk("./test1.txt");
+  console.log(r1, "r1");
+  let r2 = yield readFileThunk("./test1.txt");
+  console.log(r2, "r2");
+  let r3 = yield readFileThunk("./test1.txt");
+  console.log(r3, "r3");
 }
 
 function run(fn) {
-    let gen = fn();
+  let gen = fn();
 
-    function go(data, err) {
-        console.log(data, err, "data123");
-        let result = gen.next(data);
-        if (result.done) return;
-        result.value(go);
-    }
-    go();
+  function go(data, err) {
+    console.log(data, err, "data123");
+    let result = gen.next(data);
+    if (result.done) return;
+    result.value(go);
+  }
+  go();
 }
 run(generator);

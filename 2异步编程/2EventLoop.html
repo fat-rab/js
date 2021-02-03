@@ -71,28 +71,28 @@
         // });
         // start promiseInner2 promiseThen2 setTimeout  promiseInner1 promiseThen1
 
-        async function async1() {
-            console.log("asyncStart1");
-            await async2();
-            console.log("asyncEnd1");
-        }
-        async function async2() {
-            return Promise.resolve().then((res) => {
-                console.log("asyncPromise2");
-            });
-        }
-        console.log("start");
-        setTimeout(() => {
-            console.log("setTimeout");
-        }, 0);
-        async1();
-        new Promise((resolve) => {
-            console.log("promise1");
-            resolve();
-        }).then(() => {
-            console.log("promise2");
-        });
-        // start asyncStart1  promise1 asyncPromise2 promise2 asyncEnd1 setTimeout
+        // async function async1() {
+        //     console.log("asyncStart1");
+        //     await async2();
+        //     console.log("asyncEnd1");
+        // }
+        // async function async2() {
+        //     return Promise.resolve().then((res) => {
+        //         console.log("asyncPromise2");
+        //     });
+        // }
+        // console.log("start");
+        // setTimeout(() => {
+        //     console.log("setTimeout");
+        // }, 0);
+        // async1();
+        // new Promise((resolve) => {
+        //     console.log("promise1");
+        //     resolve();
+        // }).then(() => {
+        //     console.log("promise2");
+        // });
+        // start asyncStart1  promise1 asyncPromise2 promise2 asyncEnd1 setTimeout（asyncPromise2 promise2 asyncEnd1都是同步任务，按顺序执行）
 
         // console.log("start");
         // setTimeout(() => {

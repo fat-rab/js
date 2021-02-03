@@ -1,22 +1,21 @@
 1、术语
-“promise”是一个对象或函数，其then方法的行为符合此规范。
-“thenable”是定义then方法的对象或函数。
-“value”是任何合法的JavaScript值（包括undefined，一个卑鄙的或一个承诺）。
-“exception”是使用该throw语句抛出的值。
-“原因”是一个值，表明承诺被拒绝的原因。
+promise :一个有then方法的对象或者函数，行为符合本规范
+thenable :一个对象或者函数，拥有then方法
+值，value :任何javascript 的合法值
+异常，exception :throw语句抛出的值
+拒绝原因，reason :一个标示promise被拒绝原因的值
 2、要求
 2.1 promise状态
 一个Promise必须处在其中之一的状态：pending, fulfilled 或 rejected.
 
 如果是pending状态，则promise：
-
 可以转换到fulfilled或rejected状态。
-如果是fulfilled状态，则promise：
 
+如果是fulfilled状态，则promise：
 不能转换成任何其它状态。
 必须有一个值，且这个值不能被改变。
-如果是rejected状态,则promise可以：
 
+如果是rejected状态,则promise可以：
 不能转换成任何其它状态。
 必须有一个原因，且这个值不能被改变。
 “值不能被改变”指的是其identity不能被改变，而不是指其成员内容不能被改变。

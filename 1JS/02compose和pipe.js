@@ -1,6 +1,6 @@
 //[].slice===Array.prototype.slice
 //[]为创建数组，当使用slice时，回到原型链上面查找
-//Array.prototype.slice时定义的方法，可以重写,[].slice 是使用方法
+//Array.prototype.slice是定义的方法，可以重写,[].slice 是使用方法
 //arguments是拥有长度属性的伪数组，可以通过slice 转化成数组
 //slice(a,b) 方法： 从索引a开始截取（包括a），一直截取到b（不包括b），
 //如果里面只有一个参数，，那么就直接截取到末尾，不会改变原来的数组

@@ -1,31 +1,20 @@
-<!--
- * @Author: your name
- * @Date: 2020-11-09 14:53:34
- * @LastEditTime: 2020-12-01 16:59:27
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \js\js\test.html
--->
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <script>
-        async function test() {
-            console.log(1);
-            await Promise.reject().catch(() => {
-                console.log(2);
-            });
-            console.log(3);
-        }
-        test();
-    </script>
-</body>
+      var msg = "hello";
+      for (var i = 0; i < 10; i++) {
+        var msg = "hello" + i * 2 + i;
+      }
+      alert(msg);
 
+    </script>
+  </body>
 </html>

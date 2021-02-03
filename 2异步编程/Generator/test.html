@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function* generator() {
+        let first = yield 1;
+        let second;
+        try {
+          second = yield first + 2;
+        } catch (error) {
+          second = 6;
+        }
+        yield second + 3;
+      }
+      let g = generator();
+      console.log(g.next()); //{value:1,done:false}
+      console.log(g.next(1)); //{value:3,done:false}
+      //可以看出由于有trycatch，抛出的错误被捕获到，所以走到了catch里面，second为6
+      console.log(g.throw(new Error("error"))); //{value: 9, done: false}
+      console.log(g.next()); //{value:undefined,done:true}
+    </script>
+  </body>
+</html>

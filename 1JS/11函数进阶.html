@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-11-26 13:40:32
- * @LastEditTime: 2020-11-26 19:20:23
+ * @LastEditTime: 2021-02-01 14:15:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \js\11函数进阶.html
@@ -71,7 +71,7 @@
       // fn(a);
       // console.log(a); //1
       //按引用传递：函数形参的值是调用函数所传入实参的引用
-      //从下面这段看，引用类型似乎是按引用传递的
+      // 从下面这段看，引用类型似乎是按引用传递的
       // let obj = {
       //   x: 1,
       // };
@@ -110,7 +110,7 @@
       //   page.init();
       // }
 
-      //闭包 ：是指访问了另外一个作用域中的变量的函数
+      //闭包 ：是指访问了其他函数作用域中的变量的函数
       //闭包的作用：阻止变量被垃圾回收
       // function a() {
       //   var x = 1;
@@ -130,15 +130,15 @@
       //   };
       //   console.log(obj.getName(), obj.name); //tom tom
       //下面这段代码就可以做到让别人无法直接访问私有属性
-      //   let obj = (function () {
-      //     let name = "tom";
-      //     return {
-      //       getName() {
-      //         return name;
-      //       },
-      //     };
-      //   })();
-      //   console.log(obj.getName(), obj.name); //tom undefined
+        // let obj = (function () {
+        //   let name = "tom";
+        //   return {
+        //     getName() {
+        //       return name;
+        //     },
+        //   };
+        // })();
+        // console.log(obj.getName(), obj.name); //tom undefined
       //这在js中是一种很有用的技巧叫做模块模式，它可以把所有不必要暴露在外面的内容都封装在模块内部，对外只提供一些公开方法
       //递归：在函数中调用函数本身
       // function fib(n) {
@@ -197,7 +197,7 @@
       // 尾调用要符合三个要求
       // 1 尾调用不需要访问当前stack frame中的变量，也就是没有闭包
       // 2 返回尾调用处时，不要做其他的事情
-      // 3 尾调用的放回值，直接返回给调用它的所在函数的调用者
+      // 3 尾调用的返回值，直接返回给调用它的所在函数的调用者
       // 尾递归：递归时，如果函数调用本身 时是一个尾调用，则称之为尾递归
       // function fib(n) {
       //   if (n === 1 || n === 2) {
